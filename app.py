@@ -4,24 +4,19 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 
-# ---------------------------
+
 # App init
-# ---------------------------
 app = FastAPI(title="News Classification API (TF-IDF + LR)")
 
-# ---------------------------
-# Load model & vectorizer ONCE
-# ---------------------------
+# loading model
 model = joblib.load(
-    "D:\\scrapy\\newsscrapper\\newsscrapper\\logistic_regression_model.pkl"
+    "D:\\path_to_model\\logistic_regression_model.pkl"
 )
 vectorizer = joblib.load(
-    "D:\\scrapy\\newsscrapper\\newsscrapper\\tfidf_vectorizer.pkl"
+    "D:\\path_to_vectorizer\\tfidf_vectorizer.pkl"
 )
 
-# ---------------------------
-# Label mapping
-# ---------------------------
+
 id2label = {
     0: "lifestyle",
     1: "education",
@@ -30,9 +25,9 @@ id2label = {
     4: "business"
 }
 
-# ---------------------------
+
 # Request / Response schema
-# ---------------------------
+
 class NewsInput(BaseModel):
     title: str
     content: str
@@ -41,13 +36,11 @@ class PredictionResponse(BaseModel):
     category: str
     confidence: float
 
-# ---------------------------
-# Prediction endpoint
-# ---------------------------
+#prediction
 @app.post("/predict", response_model=PredictionResponse)
 def predict(news: NewsInput):
 
-    # Combine title + content (same as training)
+    # Combine title + content 
     text = news.title + " " + news.content
 
     # TF-IDF transform
@@ -62,11 +55,10 @@ def predict(news: NewsInput):
         "confidence": round(float(probs[pred_id]), 4)
     }
 
-# ---------------------------
 # Serve Frontend UI
-# ---------------------------
 app.mount(
     "/", 
     StaticFiles(directory="frontend", html=True), 
     name="frontend"
 )
+
