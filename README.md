@@ -6,3 +6,6 @@ An End to End production ready machine learning project which in very simple ter
 2. Clean and preprocess text
 3. Train TF-IDF + Logistic Regression model
 4. Deploy via FastAPI and Gradio
+
+# Demo
+https://huggingface.co/spaces/Gangwar09/NewsClassifier
