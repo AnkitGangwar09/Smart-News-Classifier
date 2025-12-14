@@ -15,18 +15,15 @@ class newspider(scrapy.Spider):
 
 
 
-        '''
-
+        
         next = response.css('div.listPagination')
         next_page = next.css('a').attrib['href']
 
         if "https://www.hindustantimes.com" in next_page:
-
             yield response.follow(next_page, callback = self.parse)
-
         else:
             next_page_url = urljoin('https://www.hindustantimes.com', next_page)
-            yield response.follow(next_page_url, callback = self.parse)             '''
+            yield response.follow(next_page_url, callback = self.parse)             
         
 
     def parse_article(self, response):
@@ -48,3 +45,4 @@ class newspider(scrapy.Spider):
             'Content' : content,
             'Category' : category,
         }
+
